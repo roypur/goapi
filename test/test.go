@@ -7,10 +7,11 @@ func main(){
     goapi.Listen(cont, ":4356")
 }
 
-func cont(req api.Request){
-    req.Write("");
+func cont(req goapi.Request){
+    req.Write("\r\n");
     req.Close();
     fmt.Println(req.Body);
+    fmt.Println(req.Header);
 }
 
 
