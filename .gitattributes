@@ -1,0 +1,3 @@
+test filter=lfs diff=lfs merge=lfs -crlf
+test filter=lfs diff=lfs merge=lfs -crlf
+test filter=lfs diff=lfs merge=lfs -crlf
