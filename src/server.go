@@ -45,6 +45,8 @@ func parse(conn net.Conn)(Request){
     
         str,_ = message.ReadString('\n');
         
+        fmt.Println(str);
+        
         val := strings.SplitN(strings.TrimSpace(str), " ", 3);
         
         fmt.Println(val);
