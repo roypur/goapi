@@ -47,12 +47,13 @@ func parse(conn net.Conn)(Request){
         
         fmt.Println(str);
         
-        val := strings.SplitN(strings.TrimSpace(str), " ", 3);
+        val := strings.SplitN(strings.TrimSpace(str), " ", 2);
         
         fmt.Println(val);
-        
-        header[val[0]] = val[1]
+        if(len(val)>1){
+            header[val[0]] = val[1]
         }
+    }
     
     body := make([]byte, message.Buffered());
     
