@@ -7,7 +7,7 @@ import (
 )
 
 type Request struct{
-    Header map[string][]string
+    Header map[string]string
     Body string
     Conn net.Conn
 }
@@ -37,7 +37,7 @@ func parse(conn net.Conn)(Request){
     
     var str string = "init";
 
-    header := make(map[string][]string);
+    header := make(map[string]string);
 
     for(len(str) > 3){
     
@@ -45,7 +45,7 @@ func parse(conn net.Conn)(Request){
         
         val := strings.SplitN(strings.TrimSpace(str), " ", 2);
         
-        header[val[0]] = val[1:]
+        header[val[0]] = val[1]
         }
     
     body := make([]byte, message.Buffered());
