@@ -43,10 +43,35 @@ func parse(conn net.Conn)(Request){
     
         str,_ = message.ReadString('\n');
         
-        val := strings.SplitN(strings.TrimSpace(str), " ", 2);
+        str = strings.TrimSpace(str);
+        
+        line := strings.SplitN(str, " ", 2);
+        
+        if(strings.Index(line[0], ":")>0){
+            line = strings.SplitN(str, ":", 2);
+            
+            line[0] = strings.ToLower(line[0]);
+            
+            key := strings.Split(line[0],"");
+            
+            key[0] = strings.ToUpper(key[0]);
+            
+            i := 0;
+            for(i < len(key)){
+                if(key[i] == "-"){
+                    key[i+1] = strings.ToUpper(key[i+1]);
+                }
+                i++;
+            }
+            line[0] = strings.Join(key, "");
+            
+        }
 
-        if(len(val)>1){
-            header[val[0]] = val[1]
+        if(len(line)>1){
+            key := strings.TrimSpace(line[0]);
+            val := strings.TrimSpace(line[1]);
+            
+            header[key] = val;
         }
     }
     
