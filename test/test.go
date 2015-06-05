@@ -11,7 +11,7 @@ func cont(req goapi.Request){
     req.Write("\r\n");
     req.Close();
     fmt.Println(req.Body);
-    fmt.Println(req.Header["Accept:"]);
+    fmt.Println(req.Header);
 }
 
 
