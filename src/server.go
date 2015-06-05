@@ -4,6 +4,8 @@ import (
 	"net"
 	"bufio"
 	"strings"
+	
+	"fmt"
 )
 
 type Request struct{
@@ -44,6 +46,8 @@ func parse(conn net.Conn)(Request){
         str,_ = message.ReadString('\n');
         
         val := strings.SplitN(strings.TrimSpace(str), " ", 3);
+        
+        fmt.Println(val);
         
         header[val[0]] = val[1]
         }
