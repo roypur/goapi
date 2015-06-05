@@ -43,7 +43,7 @@ func parse(conn net.Conn)(Request){
     
         str,_ = message.ReadString('\n');
         
-        val := strings.SplitN(strings.TrimSpace(str), " ", 1);
+        val := strings.SplitN(strings.TrimSpace(str), " ", 2);
         
         header[val[0]] = val[1:]
         }
