@@ -6,7 +6,7 @@ see test/test.go for example usage.
 ###type Request
 
     type Request struct{
-        Header map[string][]string
+        Header map[string]string
         Body string
         Conn net.Conn
     }
