@@ -1,10 +1,10 @@
 package main
 import (
-    "api"
+    "github.com/roypur/goapi/src"
     "fmt"
 )
 func main(){
-    api.Listen(cont, ":4356")
+    goapi.Listen(cont, ":4356")
 }
 
 func cont(req api.Request){
