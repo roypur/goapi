@@ -12,6 +12,9 @@ func cont(req goapi.Request){
     req.Close();
     fmt.Println(req.Body);
     fmt.Println(req.Header);
+    fmt.Println(req.Method);
+    fmt.Println(req.Path);
+    fmt.Println(req.Version);
 }
 
 

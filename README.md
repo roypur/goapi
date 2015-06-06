@@ -8,6 +8,9 @@ see test/test.go for example usage.
     type Request struct{
         Header map[string]string
         Body string
+        Method string
+        Path string
+        Version string
         Conn net.Conn
     }
 

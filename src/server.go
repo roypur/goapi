@@ -4,11 +4,15 @@ import (
 	"net"
 	"bufio"
 	"strings"
+	"fmt"
 )
 
 type Request struct{
     Header map[string]string
     Body string
+    Method string
+    Path string
+    Version string
     Conn net.Conn
 }
 
@@ -31,11 +35,16 @@ func (r Request) Close(){
 
 func parse(conn net.Conn)(Request){
 
-    var resp string = "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Allow-Methods: POST\r\nContent-Type: text/html; charset=utf-8\r\n";
+    var resp string = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n";
 
     message := bufio.NewReader(conn);
     
     var str string = "init";
+    
+    var method string;
+    var version string;
+    var path string;
+    
 
     header := make(map[string]string);
 
@@ -45,7 +54,9 @@ func parse(conn net.Conn)(Request){
         
         str = strings.TrimSpace(str);
         
-        line := strings.SplitN(str, " ", 2);
+        var isMethod bool = false;        
+                
+        line := strings.SplitN(str, " ", 3);
         
         if(strings.Index(line[0], ":")>0){
             line = strings.SplitN(str, ":", 2);
@@ -65,9 +76,16 @@ func parse(conn net.Conn)(Request){
             }
             line[0] = strings.Join(key, "");
             
+        }else{
+            if(len(line)>2){
+                method = strings.ToUpper(strings.TrimSpace(line[0]));
+                path = strings.TrimSpace(line[1]);
+                version = strings.TrimSpace(line[2]);
+                isMethod = true;
+            }
         }
 
-        if(len(line)>1){
+        if((len(line)>1) && isMethod==false){
             key := strings.TrimSpace(line[0]);
             val := strings.TrimSpace(line[1]);
             
@@ -83,7 +101,27 @@ func parse(conn net.Conn)(Request){
     
     req.Body = string(body);
     req.Header = header;
+    req.Method = method;
+    req.Version = version;
+    req.Path = path;
+
     req.Conn = conn;
+    
+            
+        if(len(header["Access-Control-Request-Method"])>0){
+            resp += "Access-Control-Allow-Methods: " + header["Access-Control-Request-Method"] + "\r\n";
+        }
+        if(len(header["Access-Control-Request-Headers"])>0){
+            resp += "Access-Control-Allow-Headers: " + header["Access-Control-Request-Headers"] + "\r\n";
+        }
+        if(len(header["Origin"])>4){
+            resp += "Access-Control-Allow-Origin: " + header["Origin"] + "\r\n";
+            resp += "Access-Control-Allow-Credentials: true";
+        }else{
+            resp += "Access-Control-Allow-Origin: *\r\n";
+        }
+            
+    fmt.Println(resp);
     
     conn.Write([]byte(resp));
     
