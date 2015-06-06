@@ -4,7 +4,6 @@ import (
 	"net"
 	"bufio"
 	"strings"
-	"fmt"
 )
 
 type Request struct{
@@ -108,20 +107,18 @@ func parse(conn net.Conn)(Request){
     req.Conn = conn;
     
             
-        if(len(header["Access-Control-Request-Method"])>0){
-            resp += "Access-Control-Allow-Methods: " + header["Access-Control-Request-Method"] + "\r\n";
-        }
-        if(len(header["Access-Control-Request-Headers"])>0){
-            resp += "Access-Control-Allow-Headers: " + header["Access-Control-Request-Headers"] + "\r\n";
-        }
-        if(len(header["Origin"])>4){
-            resp += "Access-Control-Allow-Origin: " + header["Origin"] + "\r\n";
-            resp += "Access-Control-Allow-Credentials: true";
-        }else{
-            resp += "Access-Control-Allow-Origin: *\r\n";
-        }
-            
-    fmt.Println(resp);
+    if(len(header["Access-Control-Request-Method"])>0){
+        resp += "Access-Control-Allow-Methods: " + header["Access-Control-Request-Method"] + "\r\n";
+    }
+    if(len(header["Access-Control-Request-Headers"])>0){
+        resp += "Access-Control-Allow-Headers: " + header["Access-Control-Request-Headers"] + "\r\n";
+    }
+    if(len(header["Origin"])>4){
+        resp += "Access-Control-Allow-Origin: " + header["Origin"] + "\r\n";
+        resp += "Access-Control-Allow-Credentials: true";
+    }else{
+        resp += "Access-Control-Allow-Origin: *\r\n";
+    }
     
     conn.Write([]byte(resp));
     
