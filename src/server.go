@@ -32,9 +32,12 @@ func (r Request) Close(){
     r.Conn.Close();
 }
 
-func parse(conn net.Conn)(Request){
+var resp string = "";
 
-    var resp string = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n";
+const ok string = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n";
+const redirect string = "HTTP/1.1 301 Moved Permanently";
+
+func parse(conn net.Conn)(Request){
 
     message := bufio.NewReader(conn);
     
@@ -119,8 +122,6 @@ func parse(conn net.Conn)(Request){
     }else{
         resp += "Access-Control-Allow-Origin: *\r\n";
     }
-    
-    conn.Write([]byte(resp));
     
     return *req;
 }
