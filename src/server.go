@@ -35,7 +35,7 @@ func (r Request) Close(){
 var Resp string = "";
 
 const Ok string = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n";
-const Redirect string = "HTTP/1.1 301 Moved Permanently";
+const Redirect string = "HTTP/1.1 301 Moved Permanently\r\n";
 
 func parse(conn net.Conn)(Request){
 
