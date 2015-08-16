@@ -32,10 +32,10 @@ func (r Request) Close(){
     r.Conn.Close();
 }
 
-var resp string = "";
+var Resp string = "";
 
-const ok string = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n";
-const redirect string = "HTTP/1.1 301 Moved Permanently";
+const Ok string = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n";
+const Redirect string = "HTTP/1.1 301 Moved Permanently";
 
 func parse(conn net.Conn)(Request){
 
@@ -111,16 +111,16 @@ func parse(conn net.Conn)(Request){
     
             
     if(len(header["Access-Control-Request-Method"])>0){
-        resp += "Access-Control-Allow-Methods: " + header["Access-Control-Request-Method"] + "\r\n";
+        Resp += "Access-Control-Allow-Methods: " + header["Access-Control-Request-Method"] + "\r\n";
     }
     if(len(header["Access-Control-Request-Headers"])>0){
-        resp += "Access-Control-Allow-Headers: " + header["Access-Control-Request-Headers"] + "\r\n";
+        Resp += "Access-Control-Allow-Headers: " + header["Access-Control-Request-Headers"] + "\r\n";
     }
     if(len(header["Origin"])>4){
-        resp += "Access-Control-Allow-Origin: " + header["Origin"] + "\r\n";
-        resp += "Access-Control-Allow-Credentials: true";
+        Resp += "Access-Control-Allow-Origin: " + header["Origin"] + "\r\n";
+        Resp += "Access-Control-Allow-Credentials: true";
     }else{
-        resp += "Access-Control-Allow-Origin: *\r\n";
+        Resp += "Access-Control-Allow-Origin: *\r\n";
     }
     
     return *req;
