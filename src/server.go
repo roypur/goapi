@@ -56,12 +56,12 @@ func parse(conn net.Conn)(Request){
         
         str = strings.TrimSpace(str);
         
-        var isMethod bool = false;        
+        var isMethod bool = false;
                 
         line := strings.SplitN(str, " ", 3);
         
         if(strings.Index(line[0], ":")>0){
-            line = strings.SplitN(str, ":", 2);
+            line = strings.SplitN(str, ":", 2); // removes colon after header key
             
             line[0] = strings.ToLower(line[0]);
             
@@ -70,6 +70,8 @@ func parse(conn net.Conn)(Request){
             key[0] = strings.ToUpper(key[0]);
             
             i := 0;
+            
+            //sets first letter after - to upper-case
             for(i < len(key)){
                 if(key[i] == "-"){
                     key[i+1] = strings.ToUpper(key[i+1]);
