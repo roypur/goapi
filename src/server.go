@@ -12,6 +12,7 @@ type Request struct{
     Method string
     Path string
     Version string
+    Resp string // cross origin allow all for current request
     Conn net.Conn
 }
 
@@ -31,8 +32,6 @@ func (r Request) Write(text string){
 func (r Request) Close(){
     r.Conn.Close();
 }
-
-var Resp string = "";
 
 const Ok string = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n";
 const Redirect string = "HTTP/1.1 301 Moved Permanently\r\n";
@@ -111,19 +110,22 @@ func parse(conn net.Conn)(Request){
 
     req.Conn = conn;
     
+    var resp string = "";
             
     if(len(header["Access-Control-Request-Method"])>0){
-        Resp += "Access-Control-Allow-Methods: " + header["Access-Control-Request-Method"] + "\r\n";
+        resp += "Access-Control-Allow-Methods: " + header["Access-Control-Request-Method"] + "\r\n";
     }
     if(len(header["Access-Control-Request-Headers"])>0){
-        Resp += "Access-Control-Allow-Headers: " + header["Access-Control-Request-Headers"] + "\r\n";
+        resp += "Access-Control-Allow-Headers: " + header["Access-Control-Request-Headers"] + "\r\n";
     }
     if(len(header["Origin"])>4){
-        Resp += "Access-Control-Allow-Origin: " + header["Origin"] + "\r\n";
-        Resp += "Access-Control-Allow-Credentials: true";
+        resp += "Access-Control-Allow-Origin: " + header["Origin"] + "\r\n";
+        resp += "Access-Control-Allow-Credentials: true";
     }else{
-        Resp += "Access-Control-Allow-Origin: *\r\n";
+        resp += "Access-Control-Allow-Origin: *\r\n";
     }
     
+    req.Resp = resp   
+       
     return *req;
 }
