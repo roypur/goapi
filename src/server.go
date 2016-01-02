@@ -4,6 +4,7 @@ import (
 	"net"
 	"bufio"
 	"strings"
+	"crypto/tls"
 )
 
 type Request struct{
@@ -16,8 +17,14 @@ type Request struct{
     Conn net.Conn
 }
 
-func Listen(handler func(req Request), listen string){
-    ln,_ := net.Listen("tcp", listen)
+func Listen(handler func(req Request), listen string, keyFile string, certFile string){
+
+    tlsPair,_ := tls.LoadX509KeyPair(certFile, keyFile)
+
+    tlsConfig := &tls.Config{Certificates : []tls.Certificate{tlsPair}}
+
+    ln,_ := tls.Listen("tcp", listen, tlsConfig)
+    
     
     for {
         conn,_ := ln.Accept()
