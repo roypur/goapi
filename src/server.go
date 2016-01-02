@@ -17,7 +17,7 @@ type Request struct{
     Conn net.Conn
 }
 
-func Listen(handler func(req Request), listen string, keyFile string, certFile string){
+func Listen(handler func(req Request), listen string, certFile string, keyFile string){
 
     tlsPair,_ := tls.LoadX509KeyPair(certFile, keyFile)
 
