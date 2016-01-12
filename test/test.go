@@ -4,7 +4,9 @@ import (
     "fmt"
 )
 func main(){
-    goapi.Listen(cont, ":4356")
+    goapi.Listen(cont, ":4356", 
+"/home/roypur/ssl/startssl/purser_it/crt.pem", 
+"/home/roypur/ssl/startssl/purser_it/key.pem")
 }
 
 func cont(req goapi.Request){
